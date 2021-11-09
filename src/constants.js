@@ -182,3 +182,14 @@ export const KeyCode = {
   Down: 40,
   F4: 115
 };
+
+
+export const IssueStatus = {
+  ToDo: 0,
+  OnHold: 1,
+  WorkingOn: 2,
+  UnderTesting: 3,
+  AwaitingFeedback: 4,
+  Done: 5,
+  Closed: 6
+};

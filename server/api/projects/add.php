@@ -49,6 +49,13 @@ class Server_Api_Projects_Add
             $project = $projectManager->getProject( $projectId );
             $projectManager->addProjectDescription( $project, $description, $descriptionFormat );
         }
+        if($project == null)
+            $project = $projectManager->getProject( $projectId );
+        $typeManager = new System_Api_TypeManager();
+        $types = $typeManager->getIssueTypes();
+        foreach($types as $type){
+            $projectManager->addFolder( $project, $type, $type['type_name'] );
+        }
 
         $result[ 'projectId' ] = $projectId;
         $result[ 'changed' ] = true;

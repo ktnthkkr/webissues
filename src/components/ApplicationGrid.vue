@@ -61,6 +61,7 @@ export default {
       } );
     },
     convertedIssues() {
+      console.log(this.issues);
       const attributes = this.columnAttributes;
       return this.issues.map( issue => {
         return {

@@ -252,6 +252,7 @@ function makeActions( ajax ) {
       const query = makeBaseQuery( state );
       query.offset = state.offset;
       query.limit = PageSize;
+      console.log(query);
       const promise = ajax.post( '/issues/list.php', query );
       commit( 'setLastPromise', promise );
       return new Promise( ( resolve, reject ) => {
@@ -269,7 +270,37 @@ function makeActions( ajax ) {
         } );
       } );
     },
-
+    dashboard({state, commit}){
+      const query = makeBaseQuery( state );
+      query.offset = state.offset;
+      query.limit = PageSize;
+      query.viewId = 7;
+      console.log(query);
+      const promise = ajax.post( '/issues/dashboard.php', query);
+      commit( 'setLastPromise', promise );
+      state.lastPromise = promise
+      console.log(state.lastPromise);
+      return new Promise( ( resolve, reject ) => {
+        promise.then( data => {
+          console.log(data);
+          console.log("2 " + state.lastPromise);
+          if (true || promise == state.lastPromise ) {
+            console.log("Here Dashboard");
+            commit( 'setData', data );
+            commit( 'setLastPromise', null );
+            resolve();
+          }else{
+            console.log('Here');
+          }
+        } ).catch( error => {
+          console.log(error);
+          if ( promise == state.lastPromise ) {
+            commit( 'setLastPromise', null );
+            reject( error );
+          }
+        } );
+      } );
+    },
     export( { state }, { allColumns } ) {
       const query = makeBaseQuery( state );
       query.offset = 0;

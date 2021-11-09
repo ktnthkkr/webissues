@@ -18,11 +18,12 @@
 -->
 
 <template>
-  <div id="application" v-bind:class="{ 'type-selected': type != null }">
+  <div id="application" v-bind:class="{ 'type-selected': type != null }"  >
     <ApplicationNavbar/>
     <ApplicationToolbar/>
-    <ApplicationGrid/>
+    <ApplicationGrid v-if="type != null" />
     <ApplicationWindow v-if="route != null"/>
+    <Home  v-if="type == null" />
   </div>
 </template>
 
@@ -33,13 +34,14 @@ import ApplicationNavbar from '@/components/ApplicationNavbar'
 import ApplicationToolbar from '@/components/ApplicationToolbar'
 import ApplicationGrid from '@/components/ApplicationGrid'
 import ApplicationWindow from '@/components/ApplicationWindow'
-
+import Home from '@/components/Home'
 export default {
   components: {
     ApplicationNavbar,
     ApplicationToolbar,
     ApplicationGrid,
-    ApplicationWindow
+    ApplicationWindow,
+    Home
   },
   computed: {
     ...mapState( 'global', [ 'serverName' ] ),

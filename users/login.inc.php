@@ -63,7 +63,7 @@ class Users_Login extends System_Web_Component
                     if ( $this->submit() ) {
                         $url = $this->request->getQueryString( 'url' );
                         if ( $url == null || $url[ 0 ] != '/' )
-                            $url = '/client/index.php';
+                            $url = '/client/index.php#/types/3/issues';
                         $this->response->redirect( $url );
                     }
                 }
