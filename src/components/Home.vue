@@ -16,7 +16,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-xs-6 col-sm-3">
                     <div class="panel panel-danger">
                         <div class="panel-body">
@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-xs-6 col-sm-3">
                     <div class="panel panel-warning">
                         <div class="panel-body">
@@ -32,20 +32,21 @@
                         </div>
                     </div>
                 </div>
-            
+
                 <div class="col-xs-12 col-sm-9">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Something
                         </div>
                         <div class="panel-body">
-                            This layout uses tabs to demonstrate what you could do with it. It probably makes more sense to use individual pages/templates in a production app.
-                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+                            <FullCalendar :options="calendarOptions" />
+
                         </div>
                     </div>
                 </div>
-                
-                <div class="col-xs-12 col-sm-3">                    
+
+                <div class="col-xs-12 col-sm-3">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                           NetSofters
@@ -60,15 +61,32 @@
     </div>
 </template>
 <script>
+
+import '@fullcalendar/core/vdom' // solves problem with Vite
+import FullCalendar from '@fullcalendar/vue'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+
 export default {
+  components: {
+    FullCalendar // make the <FullCalendar> tag available
+  },
   mounted () {
     this.$store.dispatch( 'list/dashboard' ).then(response => {
       // this.$store.dispatch( 'showError', '#');
       console.log("Response ");
       console.log(response);
-    } ).catch( error => {
+    }).catch( error => {
       console.log(error);
-    } );
+    });
+  },
+  data() {
+    return {
+      calendarOptions: {
+        plugins: [ dayGridPlugin, interactionPlugin ],
+        initialView: 'dayGridMonth'
+      }
+    }
   },
   methods: {
     getCellValue(){

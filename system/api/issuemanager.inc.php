@@ -320,9 +320,48 @@ class System_Api_IssueManager extends System_Api_Base
             $this->connection->execute( $query, $principal->getUserId(), time() );
             $issueId = $this->connection->getInsertId( 'stamps', 'stamp_id' );
 
-            $query = 'INSERT INTO {issues} ( issue_id, folder_id, issue_name, stamp_id ) VALUES ( %d, %d, %s, %d )';
-            $this->connection->execute( $query, $issueId, $folderId, $name, $issueId );
+            //updated
+            $assigned_to = '';
+            $status = '';
+            $priority = '';
+            $due_date = 'NULL';
 
+            foreach($values as $value){
+
+                if($value['attr_id'] == 6){
+                    $assigned_to = $value['attr_value'];
+                }
+
+                if($value['attr_id'] == 7){
+                    $status = $value['attr_value'];
+                }
+
+                if($value['attr_id'] == 8){
+                    $priority = $value['attr_value'];
+                }
+
+                if($value['attr_id'] == 10){
+                    $due_date = "'".$value['attr_value']."'";
+                }
+            }
+            //$due_date = $values[10];
+            /*if(isset($values[10]) && $values[10] != ''){
+                $due_date = $values[10];
+            }*/
+
+
+            $query2 = "INSERT INTO {issues} ( issue_id, folder_id, issue_name, stamp_id, assigned_to, status, priority, due_date )
+            VALUES ( %d, %d, %s, %d, %d, %d, %d, ".$due_date.")";
+            $this->connection->execute( $query2, $issueId, $folderId, $name, $issueId, $assigned_to, $status, $priority);
+
+
+            /*
+            $query2 = "INSERT INTO {issues} ( issue_id, folder_id, issue_name, stamp_id, assigned_to, status, priority, due_date )
+            VALUES ( $issueId, $folderId, $name, $issueId, $assigned_to, $status, $priority, ".$due_date.")";
+            $this->connection->execute( $query2, $issueId, $folderId, $name, $issueId, $assigned_to, $status, $priority);
+            */
+
+            //var_dump($values);die;
             $query = 'INSERT INTO {changes} ( change_id, issue_id, change_type, stamp_id, value_new ) VALUES ( %d, %d, %d, %d, %s )';
             $this->connection->execute( $query, $issueId, $issueId, System_Const::IssueCreated, $issueId, $name );
 
@@ -337,6 +376,24 @@ class System_Api_IssueManager extends System_Api_Base
 
             $transaction->commit();
         } catch ( Exception $ex ) {
+            //echo $ex->getMessage();die;
+            $myfile = fopen("newfile.txt", "a") or die("Unable to open file!");
+
+            $txt = "\nquery : ".$query2;
+            fwrite($myfile, $txt);
+
+
+            $txt = "\nvalues : ".json_encode($values);
+            fwrite($myfile, $txt);
+
+            $txt = "\n due date : ".$due_date;
+            fwrite($myfile, $txt);
+
+
+            $txt = "\n".$ex->getMessage();
+            fwrite($myfile, $txt);
+            fclose($myfile);
+
             $transaction->rollback();
             throw $ex;
         }

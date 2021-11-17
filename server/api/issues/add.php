@@ -77,7 +77,8 @@ class Server_Api_Issues_Add
 
         $issueManager = new System_Api_IssueManager();
 
-        $issueId = $issueManager->addIssue( $folder, $name, $initialValues );
+        //$issueId = $issueManager->addIssue( $folder, $name, $initialValues );
+        $issueId = $issueManager->addIssue( $folder, $name, $orderedValues);
         $lastStampId = $issueId;
 
         $issue = $issueManager->getIssue( $issueId );

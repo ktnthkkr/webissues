@@ -30,6 +30,11 @@
   "homepage": "https://webissues.mimec.org",
   "private": true,
   "dependencies": {
+    "@fullcalendar/core": "^5.10.1",
+    "@fullcalendar/daygrid": "^5.10.1",
+    "@fullcalendar/interaction": "^5.10.1",
+    "@fullcalendar/timegrid": "^5.10.1",
+    "@fullcalendar/vue": "^5.10.1",
     "bootstrap": "^3.4.1",
     "compare-versions": "^3.6.0",
     "core-js": "^3.6.5",
